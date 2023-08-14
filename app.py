@@ -33,14 +33,14 @@ def predict():
             temp_T_Mean = float(input_data.get('temperature'))
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, temp_T_Mean] 
 
-            model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_temp_orig-data_model.sav')
+            model = joblib.load('XG_Boost_initial_features_temp_orig-data_model.sav')
         if(test_type=='t2m_d2m_west'):
             t2m = float(input_data.get('t2m'))
             d2m = float(input_data.get('d2m'))
     
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, t2m, d2m] 
        
-            model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_t2m_d2m_orig-data_west-ocean_model.sav')
+            model = joblib.load('XG_Boost_initial_features_t2m_d2m_orig-data_west-ocean_model.sav')
         
         if(test_type=='t2m_d2m_east'):
             t2m = float(input_data.get('t2m'))
@@ -48,7 +48,7 @@ def predict():
     
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, t2m, d2m] 
         
-            model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_t2m_d2m_orig-data_east-sea_model.sav')
+            model = joblib.load('XG_Boost_initial_features_t2m_d2m_orig-data_east-sea_model.sav')
     
 
 
