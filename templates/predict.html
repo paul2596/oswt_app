@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>Model Prediction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp', []);
+        console.log('start')
+        app.controller('PredictionController', function($scope, $http, $timeout) {
+            $scope.prediction = 0
+            $scope.selectedTab = 1
+            $scope.errorVal = false
+            $scope.formData = {};
+            $scope.loadingGif = document.querySelector('.loading-gif');
+            $scope.loadingText = document.querySelector('.loading-text');
+            $scope.loadingBlock  = document.querySelector('.box-loading-block')
+            $scope.predictionText = document.querySelector('.prediction-text')
+            $scope.predictionBlock  = document.querySelector('.prediction');
+            $scope.errorBlock  = document.querySelector('.error-block');
+
+            $scope.loadingGif.style.display = 'none'
+            $scope.loadingText.style.display = 'none'
+            $scope.loadingBlock.style.display = 'none'
+
+            
+            $scope.showloading = function(){
+
+
+                $scope.loadingGif.style.display = 'block';
+                $scope.loadingText.style.display = 'block';
+                $scope.loadingBlock.style.display = 'block';
+                $scope.predictionText.style.display = 'none';
+                $scope.predictionBlock.style.display = 'none';
+
+                $timeout(function() {
+                    $scope.loadingGif.style.display = 'none';
+                    $scope.loadingText.style.display = 'none';
+                    $scope.loadingBlock.style.display = 'none';
+
+                    $scope.predictionText.style.display = 'block';
+                    $scope.predictionBlock.style.display = 'block';
+
+                }, 2000);
+            }
+
+            $scope.selectTab = function(tabId) { 
+                $scope.selectedTab = tabId; 
+            };
+
+            $scope.getPrediction = function() {
+                $scope.showloading();
+                $scope.errorVal = false
+                //http post with callback - then fn
+                var request = {
+                    'data':$scope.formData,
+                    'testType': 'temp_all_direction'
+                }
+                if($scope.selectedTab==2){
+                    request.testType = 't2m_d2m_west';
+                }
+                else if($scope.selectedTab==3){
+                    request.testType = 't2m_d2m_east';
+                }
+
+                console.log(request)
+                $http.post('/predict', request)
+                    .then(function(response) {
+                        $scope.prediction = response.data.prediction;
+                        $scope.progressBarWidth = ($scope.prediction / 7000) * 100;
+                    }, function(error) {
+                        $timeout(function() {
+                            $scope.errorVal = true
+                        }, 2000);
+                    });
+            };
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #4bbe4f;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .column {
+            flex: 1;
+            padding: 10px;
+        }
+        .box {
+            position: relative;
+            left: 200px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: 65%;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .box-loading-block{
+            position: relative;
+            left: 200px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: 65%;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .error-block{
+            position: relative;
+            left: 200px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: 65%;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .prediction {
+            text-align: center;
+            margin-top: 20px;
+
+        }
+        .prediction-bar {
+            width: 100%;
+            height: 20px;
+            position: relative;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background: linear-gradient(to right, #00ffb3 0%, #00ff99c1 50%, #e0e0e0 50%, #e0e0e0 100%);
+        }
+
+        .prediction-fill {
+            height: 100%;
+            border-radius: 5px;
+            background-color: #00ff95;
+        }
+        .loading-gif {
+            margin-top: 20px;
+        }
+
+        .loading-text {
+            margin-top: 10px;
+        }
+
+        .submit-button{
+            margin-left: 290px;
+            padding: 8px 18px;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        .button {
+            cursor: pointer;
+            background-color: #a6a8a6; 
+            border: none;
+            color: white;
+            padding: 12px 11px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px
+        }
+        .active{
+            background-color: #4CAF50; 
+        }
+        .test-case-header{
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .center-align{
+            text-align: center;
+
+        }
+        .align-input-box{
+            position: relative;
+            left: 100px;
+        }
+    </style>
+
+
+
+</head>
+<body ng-controller="PredictionController">
+    <div class="header">
+        <h1>Power Prediction Model For An Offshore Wind Turbine</h1>
+    </div>
+
+    <div class="container">
+        <header class="test-case-header center-align">
+            Select Test Case for Including Additional Features to Predict with
+        </header>
+        <nav class="tabs center-align"><button ng-click="selectTab(1)" class="button" ng-class="{'active': selectedTab == 1 }">Temperature with all directions</button><button
+                ng-click="selectTab(2)" class="button" ng-class="{'active': selectedTab == 2 }">T2M and D2M Westerly Winds</button><button
+                ng-click="selectTab(3)" class="button" ng-class="{'active':selectedTab == 3 }">T2M and D2M Easterly Winds</button></nav>
+        <div>
+            <div class="box">
+                <!-- <div class="center-align"><h2>Enter Values</h2></div> -->
+                <form novalidate> 
+                    <!-- action="/predict" method="post" -->
+                    <section ng-show="selectedTab == 1">
+                        <div class="container align-input-box">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="windspeed">Wind Speed:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="windspeed" name="windspeed" ng-model="formData.windspeed"><span>&nbsp;(m/s)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="winddirection">Wind Direction:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="winddirection" name="winddirection" ng-model="formData.winddirection"><span>&nbsp;(degN)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="pitchangle">Pitch Angle:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="pitchangle" name="pitchangle" ng-model="formData.pitchangle"><span>&nbsp;(&deg;)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="temperature">Temperature:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="temperature" name="temperature" ng-model="formData.temperature"><span>&nbsp;(&deg;C)</span><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+     
+                    <section ng-show="selectedTab ==2">
+                        <div class="container align-input-box">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="windspeed">Wind Speed:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="windspeed" name="windspeed" ng-model="formData.windspeed"><span>&nbsp;(m/s)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="winddirection">Wind Direction (Range 207 degN to 309 degN):</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="winddirection1" name="winddirection1" ng-model="formData.winddirection" min="207" max ="309"><span>&nbsp;(degN)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="pitchangle">Pitch Angle:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="pitchangle" name="pitchangle" ng-model="formData.pitchangle"><span>&nbsp;(&deg;)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="t2m">T2M:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="t2m" name="t2m" ng-model="formData.t2m"><span>&nbsp;(&deg;C)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="d2m">D2M:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="d2m" name="d2m" ng-model="formData.d2m"><span>&nbsp;(&deg;C)</span><br><br>
+                                </div>
+                            </div>
+                        </div>                    
+                    </section>
+    
+                    <section ng-show="selectedTab == 3">
+                        <div class="container align-input-box">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="windspeed">Wind Speed:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="windspeed" name="windspeed" ng-model="formData.windspeed"><span>&nbsp;(m/s)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="winddirection">Wind Direction (Range 27 degN to 101 degN):</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="winddirection2" name="winddirection2" min="27" max="102" ng-model="formData.winddirection" ><span>&nbsp;(degN)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="pitchangle">Pitch Angle:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="pitchangle" name="pitchangle" ng-model="formData.pitchangle"><span>&nbsp;(&deg;)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="t2m">T2M:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="t2m" name="t2m" ng-model="formData.t2m"><span>&nbsp;(&deg;C)</span><br><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="d2m">D2M:</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" step="any" id="d2m" name="d2m" ng-model="formData.d2m"><span>&nbsp;(&deg;C)</span><br><br>
+                                </div>
+                            </div>
+                        </div>     
+                    </section>
+                    <br>
+                    <div></div>
+                    <input type="submit" value="Predict" style="margin-left: 300px;" ng-click="getPrediction()" class="submit-button">
+                </form>
+                <!-- <div style="margin-left: 305px; margin-top: 5px;" > <button onclick="clearPage()">Clear</button> </div> -->
+            </div>
+        </div>
+
+        <div class ='box-loading-block'>
+            <div class="loading-gif" >
+                <img src="{{url_for('static', filename='loading.gif')}}" style="max-height: 25%;max-width: 25%;margin-left: 250px;" alt="Loading">
+            </div>
+            <div class="loading-text" style="margin-left: 250px;">
+                Please wait, taking the data for a spin.....
+            </div>     
+        </div>
+
+        
+        <div  class="box" ng-show="prediction && !errorVal">
+            <div class="prediction">
+                <div class="prediction-bar">
+                    <div class="prediction-fill" ng-style="{ 'width': progressBarWidth + '%' }"></div>
+                </div> 
+                <h3>Predicted Power:</h3>
+                <p class="prediction-text"><b><span ng-bind="prediction"></span>&nbsp;kW</b><br><br>
+                    <span >
+                        <span >&nbsp;Input: Wind Speed=<span ng-bind="formData.windspeed"></span>m/s</span>
+                        <span>,&nbsp;Wind Direction=<span ng-bind="formData.winddirection"></span>degN</span>
+                        <span>,&nbsp;Pitch Angle=<span ng-bind="formData.pitchangle"></span>&deg;</span>
+                        <span ng-show="selectedTab==1">,&nbsp;Temperature=<span ng-bind="formData.temperature"></span>&deg;C</span>
+                        <span ng-show="selectedTab==2 || selectedTab==3">,&nbsp;T2M=<span ng-bind="formData.t2m"></span>&deg;C</span>
+                        <span ng-show="selectedTab==2 || selectedTab==3">,&nbsp;D2M=<span ng-bind="formData.d2m"></span>&deg;C</span>
+
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+
+
+
+        <div class="error-block" ng-if="errorVal">
+            <img src="{{url_for('static', filename='error.gif')}}" style="max-height: 50%;max-width: 50%;margin-left: 200px;" alt="Error">
+            <div class="error-text" style="text-align: center;">
+                Oops! Something went wrong.....
+            </div>
+        </div>
+        <div class="box center-align">
+            <h2>Power Curve for Comparison</h2>
+            <!-- <img id="previewImage" src="power_curve" alt="Image Preview" style="max-width: 100%;"> -->
+            <img src="{{url_for('static', filename='power_curve_v1.png')}}" style="max-width: 75%;"/>
+        </div>
+
+    </div>
+
+
+    
+</body>
+</html>
