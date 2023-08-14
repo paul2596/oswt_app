@@ -6,7 +6,7 @@ import numpy as np
 app = Flask(__name__)
 
 print('Testing')
-@app.route('/')
+@app.route('/home')
 def home():
     return render_template('predict.html')
 
