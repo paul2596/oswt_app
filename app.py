@@ -3,9 +3,13 @@ import joblib
 import time
 import numpy as np
 import logging
+import os
 
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG) 
+
+#get model directory path manually as azure isn't recognizin
+model_dir = os.path.join(os.path.dirname(__file__), 'models')
 
 print('Testing')
 @app.route('/')
@@ -39,8 +43,8 @@ def predict():
             print('temp_all_direction')
             temp_T_Mean = float(input_data.get('temperature'))
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, temp_T_Mean] 
-
-            model = joblib.load('/XG_Boost_initial_features_temp_orig-data_model.sav')
+            model_path = os.path.join(model_dir, 'XG_Boost_initial_features_temp_orig-data_model.sav')
+            model = joblib.load(model_path)
         if(test_type=='t2m_d2m'):
             print('t2m_d2m')
             t2m = float(input_data.get('t2m'))
@@ -49,19 +53,20 @@ def predict():
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, t2m, d2m] 
             if(direction=='west'):
                 
-                model = joblib.load('XG_Boost_initial_features_t2m_d2m_orig-data_west-ocean_model.sav')
+                model_path = os.path.join(model_dir, 'XG_Boost_initial_features_t2m_d2m_orig-data_west-ocean_model.sav')
+                model = joblib.load(model_path)
             elif(direction=='east'):
-                model = joblib.load('XG_Boost_initial_features_t2m_d2m_orig-data_east-sea_model.sav')
-
+                model_path = os.path.join(model_dir, 'XG_Boost_initial_features_t2m_d2m_orig-data_east-sea_model.sav')
+                model = joblib.load(model_path)
         if(test_type=='obhL'):
             obhL = float(input_data.get('obhL'))
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, obhL] 
             if(direction=='west'):
-                
-                model = joblib.load('XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_west-ocean_model.sav')
+                model_path = os.path.join(model_dir, 'XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_west-ocean_model.sav')
+                model = joblib.load(model_path)
             elif(direction=='east'):
-                model = joblib.load('XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_east-sea_model.sav')
-
+                model_path = os.path.join(model_dir, 'XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_east-sea_model.sav')
+                model = joblib.load(model_path)
 
         prediction = model.predict([features])
         time.sleep(2.0)
