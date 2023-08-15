@@ -180,7 +180,7 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-size: 16px;
+            font-size: 12px;
             border-radius: 5px
         }
         .active{
@@ -224,10 +224,10 @@
     </div>
 
     <div class="container">
-        <header class="test-case-header center-align">
+        <header class="test-case-header" style="margin-left: 200px;">
             Select Test Case for Including Additional Features to Predict with
         </header>
-        <nav class="tabs center-align"><button ng-click="selectTab('temp_all_direction')" class="button"
+        <nav class="tabs" style="margin-left: 200px;"><button ng-click="selectTab('temp_all_direction')" class="button"
                 ng-class="{'active': selectedTab == 'temp_all_direction' }">Temperature (Wind Flow: all directions)</button> <button ng-click="selectTab('t2m_d2m')"
                 class="button" ng-class="{'active': selectedTab == 't2m_d2m' }">2m Air and Dew Point Temp</button> <button
                 ng-click="selectTab('obhL')" class="button" ng-class="{'active':selectedTab == 'obhL' }">Obukhov Length</button>
