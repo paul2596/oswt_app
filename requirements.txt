@@ -8,4 +8,4 @@ pandas==1.5.3
 numpy==1.24.3
 applicationinsights==0.11.9
 xgboost==0.71
-libglib==2.0.0
+libgomp==13.1.0
