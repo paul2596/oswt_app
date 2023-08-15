@@ -72,7 +72,7 @@ def predict():
 #log error   
 @app.errorhandler(Exception)
 def handle_error(e):
-    app.logger.error('An exception occurred: %s', str(e))
+    app.logger.error('An error occurred: %s', str(e))
     return 'An error occurred', 500
 
 if __name__ == '__main__':
