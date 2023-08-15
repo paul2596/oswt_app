@@ -2,11 +2,9 @@ from flask import Flask, render_template, request, jsonify
 import joblib
 import time
 import numpy as np
-import logging
 import os
 
 app = Flask(__name__)
-app.logger.setLevel(logging.DEBUG) 
 
 #get model directory path manually as azure isn't recognizin
 model_dir = os.path.join(os.path.dirname(__file__), 'models')
@@ -19,7 +17,6 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     print('service hit successfull')
-    app.logger.info('service hit successfull')
 
     error_value = True
 
@@ -37,7 +34,6 @@ def predict():
        & (WindVane_T_Mean !=0)):
         error_value = False
         print('entered initial loop')
-        app.logger.info('entered initial loop')
 
         if(test_type=='temp_all_direction'):
             print('temp_all_direction')
@@ -77,7 +73,6 @@ def predict():
 #log error   
 @app.errorhandler(Exception)
 def handle_error(e):
-    app.logger.error('An error occurred: %s', str(e))
     return str(e), 500
 
 if __name__ == '__main__':
