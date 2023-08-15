@@ -34,7 +34,7 @@ def predict():
             temp_T_Mean = float(input_data.get('temperature'))
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, temp_T_Mean] 
 
-            model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_temp_orig-data_model.sav')
+            model = joblib.load('XG_Boost_initial_features_temp_orig-data_model.sav')
         if(test_type=='t2m_d2m'):
             t2m = float(input_data.get('t2m'))
             d2m = float(input_data.get('d2m'))
@@ -42,18 +42,18 @@ def predict():
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, t2m, d2m] 
             if(direction=='west'):
                 
-                model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_t2m_d2m_orig-data_west-ocean_model.sav')
+                model = joblib.load('XG_Boost_initial_features_t2m_d2m_orig-data_west-ocean_model.sav')
             elif(direction=='east'):
-                model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_t2m_d2m_orig-data_east-sea_model.sav')
+                model = joblib.load('XG_Boost_initial_features_t2m_d2m_orig-data_east-sea_model.sav')
 
         if(test_type=='obhL'):
             obhL = float(input_data.get('obhL'))
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, obhL] 
             if(direction=='west'):
                 
-                model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_west-ocean_model.sav')
+                model = joblib.load('XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_west-ocean_model.sav')
             elif(direction=='east'):
-                model = joblib.load('C:/Users/Paul Jr/Documents/predict/XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_east-sea_model.sav')
+                model = joblib.load('XG_Boost_initial_features_obhL_orig-data-era5-30km-obhL_east-sea_model.sav')
 
 
         prediction = model.predict([features])
