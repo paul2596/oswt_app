@@ -10,8 +10,9 @@
         var app = angular.module('myApp', []);
         console.log('start')
         app.controller('PredictionController', function($scope, $http, $timeout) {
+            $scope.selectedDirection = ''
             $scope.prediction = 0
-            $scope.selectedTab = 1
+            $scope.selectedTab = 'temp_all_direction'
             $scope.errorVal = false
             $scope.formData = {};
             $scope.loadingGif = document.querySelector('.loading-gif');
@@ -48,15 +49,22 @@
 
             $scope.selectTab = function(tabId) { 
                 $scope.selectedTab = tabId; 
+                $scope.selectedDirection ='';
+                $scope.formData = {};
+                $scope.prediction =null
             };
-
+            $scope.selectDirection = function(direction){
+                $scope.selectedDirection = direction;
+            }
             $scope.getPrediction = function() {
                 $scope.showloading();
                 $scope.errorVal = false
+
                 //http post with callback - then fn
                 var request = {
                     'data':$scope.formData,
-                    'testType': 'temp_all_direction'
+                    'testType': $scope.selectedTab,
+                    'direction': $scope.selectedDirection
                 }
                 if($scope.selectedTab==2){
                     request.testType = 't2m_d2m_west';
@@ -190,6 +198,21 @@
             position: relative;
             left: 100px;
         }
+        .direction-btn{
+            cursor: pointer;
+            background-color: #a6a8a6;
+            border: none;
+            color: white;
+            padding: 4px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 10px;
+            border-radius: 5px;
+        }
+        .direction-btn-active{
+            background-color: #4CAF50; 
+        }
     </style>
 
 
@@ -204,15 +227,19 @@
         <header class="test-case-header center-align">
             Select Test Case for Including Additional Features to Predict with
         </header>
-        <nav class="tabs center-align"><button ng-click="selectTab(1)" class="button" ng-class="{'active': selectedTab == 1 }">Temperature with all directions</button><button
-                ng-click="selectTab(2)" class="button" ng-class="{'active': selectedTab == 2 }">T2M and D2M Westerly Winds</button><button
-                ng-click="selectTab(3)" class="button" ng-class="{'active':selectedTab == 3 }">T2M and D2M Easterly Winds</button></nav>
+        <nav class="tabs center-align"><button ng-click="selectTab('temp_all_direction')" class="button"
+                ng-class="{'active': selectedTab == 'temp_all_direction' }">Temperature (Wind Flow: all directions)</button> <button ng-click="selectTab('t2m_d2m')"
+                class="button" ng-class="{'active': selectedTab == 't2m_d2m' }">2m Air and Dew Point Temp</button> <button
+                ng-click="selectTab('obhL')" class="button" ng-class="{'active':selectedTab == 'obhL' }">Obukhov Length</button>
+            <!-- <button ng-click="selectTab(3)" class="button" ng-class="{'active':selectedTab == 3 }">T2M and D2M Easterly
+                Winds</button> -->
+        </nav>
         <div>
             <div class="box">
                 <!-- <div class="center-align"><h2>Enter Values</h2></div> -->
                 <form novalidate> 
                     <!-- action="/predict" method="post" -->
-                    <section ng-show="selectedTab == 1">
+                    <section ng-show="selectedTab == 'temp_all_direction'">
                         <div class="container align-input-box">
                             <div class="row">
                                 <div class="col-md-2">
@@ -222,6 +249,7 @@
                                     <input type="number" step="any" id="windspeed" name="windspeed" ng-model="formData.windspeed"><span>&nbsp;(m/s)</span><br><br>
                                 </div>
                             </div>
+  
                             <div class="row">
                                 <div class="col-md-2">
                                     <label for="winddirection">Wind Direction:</label>
@@ -249,7 +277,7 @@
                         </div>
                     </section>
      
-                    <section ng-show="selectedTab ==2">
+                    <section ng-show="selectedTab =='t2m_d2m'">
                         <div class="container align-input-box">
                             <div class="row">
                                 <div class="col-md-2">
@@ -261,10 +289,34 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="winddirection">Wind Direction (Range 207 degN to 309 degN):</label>
+                                    <b>Select Direction</b>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="number" step="any" id="winddirection1" name="winddirection1" ng-model="formData.winddirection" min="207" max ="309"><span>&nbsp;(degN)</span><br><br>
+                                    <nav ><button ng-click="selectDirection('west')" class="direction-btn" ng-class="{'direction-btn-active': selectedDirection == 'west' }">West</button><button
+                                        ng-click="selectDirection('east')" class="direction-btn" ng-class="{'direction-btn-active': selectedDirection == 'east' }">East</button>
+                                    </nav>   
+                                </div>
+                            </div>
+                            <div style=" margin-top: 20px;">
+                                <div ng-show="selectedDirection == 'west'">
+                                    <div class="row" >
+                                        <div class="col-md-2">
+                                            <label for="winddirection">Wind Direction (Range 207 degN to 309 degN):</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" step="any" id="winddirection1" name="winddirection1" ng-model="formData.winddirection" min="207" max ="309"><span>&nbsp;(degN)</span><br><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="selectedDirection == 'east'">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="winddirection">Wind Direction (Range 27 degN to 101 degN):</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" step="any" id="winddirection2" name="winddirection2" min="27" max="102" ng-model="formData.winddirection" ><span>&nbsp;(degN)</span><br><br>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -277,7 +329,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="t2m">T2M:</label>
+                                    <label for="t2m">2m Air Temperature:</label>
                                 </div>
                                 <div class="col-md-3">
                                     <input type="number" step="any" id="t2m" name="t2m" ng-model="formData.t2m"><span>&nbsp;(&deg;C)</span><br><br>
@@ -285,7 +337,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="d2m">D2M:</label>
+                                    <label for="d2m">2m Dew Point Temperature:</label>
                                 </div>
                                 <div class="col-md-3">
                                     <input type="number" step="any" id="d2m" name="d2m" ng-model="formData.d2m"><span>&nbsp;(&deg;C)</span><br><br>
@@ -294,7 +346,7 @@
                         </div>                    
                     </section>
     
-                    <section ng-show="selectedTab == 3">
+                    <section ng-show="selectedTab == 'obhL'">
                         <div class="container align-input-box">
                             <div class="row">
                                 <div class="col-md-2">
@@ -306,12 +358,37 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="winddirection">Wind Direction (Range 27 degN to 101 degN):</label>
+                                    <b>Select Direction</b>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="number" step="any" id="winddirection2" name="winddirection2" min="27" max="102" ng-model="formData.winddirection" ><span>&nbsp;(degN)</span><br><br>
+                                    <nav ><button ng-click="selectDirection('west')" class="direction-btn" ng-class="{'direction-btn-active': selectedDirection == 'west' }">West</button><button
+                                        ng-click="selectDirection('east')" class="direction-btn" ng-class="{'direction-btn-active': selectedDirection == 'east' }">East</button>
+                                    </nav>   
                                 </div>
                             </div>
+                            <div style=" margin-top: 20px;">
+                                <div ng-show="selectedDirection == 'west'">
+                                    <div class="row" >
+                                        <div class="col-md-2">
+                                            <label for="winddirection">Wind Direction (Range 207 degN to 309 degN):</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" step="any" id="winddirection1" name="winddirection1" ng-model="formData.winddirection" min="207" max ="309"><span>&nbsp;(degN)</span><br><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="selectedDirection == 'east'">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="winddirection">Wind Direction (Range 27 degN to 101 degN):</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" step="any" id="winddirection2" name="winddirection2" min="27" max="102" ng-model="formData.winddirection" ><span>&nbsp;(degN)</span><br><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-2">
                                     <label for="pitchangle">Pitch Angle:</label>
@@ -322,18 +399,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2">
-                                    <label for="t2m">T2M:</label>
+                                    <label for="obhL">Obukhov Length:</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="number" step="any" id="t2m" name="t2m" ng-model="formData.t2m"><span>&nbsp;(&deg;C)</span><br><br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="d2m">D2M:</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" step="any" id="d2m" name="d2m" ng-model="formData.d2m"><span>&nbsp;(&deg;C)</span><br><br>
+                                    <input type="number" step="any" id="obhL" name="obhL" ng-model="formData.obhL"><span>&nbsp;(&deg;C)</span><br><br>
                                 </div>
                             </div>
                         </div>     
