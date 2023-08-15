@@ -68,7 +68,13 @@ def predict():
         return jsonify({'prediction': str(prediction[0])})
     else:
         return jsonify({'error': error_value})
-    
+
+#log error   
+@app.errorhandler(Exception)
+def handle_error(e):
+    app.logger.error('An exception occurred: %s', str(e))
+    return 'An error occurred', 500
+
 if __name__ == '__main__':
     app.run(debug=True)
 
