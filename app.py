@@ -38,6 +38,7 @@ def predict():
 
             model = joblib.load('/XG_Boost_initial_features_temp_orig-data_model.sav')
         if(test_type=='t2m_d2m'):
+            print('t2m_d2m')
             t2m = float(input_data.get('t2m'))
             d2m = float(input_data.get('d2m'))
     
