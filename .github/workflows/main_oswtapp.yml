@@ -29,7 +29,10 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
+
+      - name: Install Additional dependencies  
+        run: sudo apt-get install libgomp1 zlib1g-dev
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
       - name: Upload artifact for deployment jobs
