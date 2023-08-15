@@ -2,8 +2,10 @@ from flask import Flask, render_template, request, jsonify
 import joblib
 import time
 import numpy as np
+import logging
 
 app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG) 
 
 print('Testing')
 @app.route('/')
@@ -13,6 +15,7 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     print('service hit successfull')
+    app.logger.info('service hit successfull')
 
     error_value = True
 
@@ -30,6 +33,7 @@ def predict():
        & (WindVane_T_Mean !=0)):
         error_value = False
         print('entered initial loop')
+        app.logger.info('entered initial loop')
 
         if(test_type=='temp_all_direction'):
             print('temp_all_direction')
