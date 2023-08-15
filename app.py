@@ -29,12 +29,14 @@ def predict():
        & (Anemo_T_Mean !=0)
        & (WindVane_T_Mean !=0)):
         error_value = False
-        
+        print('entered initial loop')
+
         if(test_type=='temp_all_direction'):
+            print('temp_all_direction')
             temp_T_Mean = float(input_data.get('temperature'))
             features = [Pitch_Deg_Mean, Anemo_T_Mean, WindVane_T_Mean, temp_T_Mean] 
 
-            model = joblib.load('XG_Boost_initial_features_temp_orig-data_model.sav')
+            model = joblib.load('/XG_Boost_initial_features_temp_orig-data_model.sav')
         if(test_type=='t2m_d2m'):
             t2m = float(input_data.get('t2m'))
             d2m = float(input_data.get('d2m'))
@@ -63,5 +65,5 @@ def predict():
         return jsonify({'error': error_value})
     
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
