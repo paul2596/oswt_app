@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'oswt'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_682C076B1B1C410D9EF843544341BA99 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0BF146A3E27C4FCCB58DEB6644121EF1 }}
