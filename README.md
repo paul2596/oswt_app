@@ -25,7 +25,8 @@ Base model was developed with key features selected from the turbine like wind s
 
 
 # Process Overview
-![image](https://github.com/paul2596/oswt/assets/71576923/f38458e9-02e3-4172-8af5-e6400d6ebd12)
+![image](https://github.com/paul2596/oswt_app/assets/71576923/2af8402a-79c0-4d87-91e1-15f28abb42fa)
+
 
 # Outlier Removal
 ![image](https://github.com/paul2596/oswt_app/assets/71576923/db33915e-b2a0-4a49-9a78-e45ac774ce7a)
@@ -70,7 +71,8 @@ After using the angles to perform the directional split we use a wind rose[4] to
 before and after performing the split as shown in Fig (b)and(c).
 
 # Test Cases
-![image](https://github.com/paul2596/oswt/assets/71576923/f969f305-a7f3-4acc-b8fd-1c461fe60ec6)
+![image](https://github.com/paul2596/oswt_app/assets/71576923/3fdb66f5-b771-493b-9dc3-aeab68ff0bec)
+
 
 Different test cases were formed by combining the base model with additional weather information like, 
 Temperature (T), Pressure (P), 2m Ambient Air Temperature (T2M), 2m Dew Point Temperature (D2M) (T2M and D2M are used to calculate relative humidity) , Temperature difference between sea/land surface and 2m ambient air (TD), Relative humidity(RH) and Obukhov length (ObhL) (A measure of turbulence and atmospheric stability ) [2]
@@ -78,16 +80,23 @@ Temperature (T), Pressure (P), 2m Ambient Air Temperature (T2M), 2m Dew Point Te
 # Results
 From the plots comparing MAE scores with the base model, we see that Case 2 on adding temperature it influences power prediction and improves accuracy. For Case 3 on adding pressure there is no positive influence on model performance. Case 4 where temperature difference is used has a positive impact for wind flow across land compared to the case of wind flow across sea, this could be because land surface gets heated up easily and air would rise up creating a low pressure region and influence wind flow. But this is not the case for wind flowing across sea as water can absorb more heat and the air wouldn't heat up. For Case 5 we see that when 2m air and dew point temperatures which influence relative humidity are considered, the model performance improves. When the same 2 features were used to calculate relative humidity and used in Case 6 it does not have a postive impact on model performance. This could be because the model is able to capture the variation better from the two features when they are used separately. In Case 7 when Obukhov Length was used as an additional feature we see that this does not influence the power prediction. This could be because there might be lesser turbulence and influence of atmospheric stability. In case of a wind farm there would be more turbines in close vicinity which would be subjected to a wake effect as wind flows from one turbine to the other. Obukhov length does not have a positive impact on the power production model for the single test turbine that was used in our study.
 
-![image](https://github.com/paul2596/oswt/assets/71576923/71dacdb6-c15d-483b-a25c-84280cc24b72)
+![image](https://github.com/paul2596/oswt_app/assets/71576923/2571754d-0a66-456b-848a-5b1b5645d256)
 
-![image](https://github.com/paul2596/oswt/assets/71576923/9620dc2e-20ea-49a1-978b-25045c8bedeb)
+
+![image](https://github.com/paul2596/oswt_app/assets/71576923/f8d66ccf-4b49-4681-b613-c09648b01c81)
+
 
 
 # Final App 
-![image](https://github.com/paul2596/oswt/assets/71576923/e67bf2a8-fcab-4a4a-a48f-0fe3a17d769d)
+![image](https://github.com/paul2596/oswt_app/assets/71576923/0aece5d6-fcb4-4476-b6f4-9d650488b242)
 
 
-https://github.com/paul2596/oswt/assets/71576923/9f23bc8d-b714-4248-8f2d-89e8c5f95c5c
+
+
+
+Uploading final_app.mp4…
+
+
 
 
 
