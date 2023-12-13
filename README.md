@@ -94,7 +94,9 @@ From the plots comparing MAE scores with the base model, we see that Case 2 on a
 
 
 
-Uploading final_app.mp4…
+
+https://github.com/paul2596/oswt_app/assets/71576923/1d050619-7d32-481d-9386-dfd8453f2054
+
 
 
 
